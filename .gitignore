@@ -1,0 +1,6 @@
+.env
+nginx.conf
+proBOT.iml
+yarn.lock
+.idea
+node_modules
