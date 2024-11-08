@@ -121,6 +121,8 @@ export const handleUserMessage = async (bot: TelegramBot, msg: TelegramBot.Messa
 
         // Send message to ChatGPT and wait for the response
         const response = await getChatGPTResponse(msg.text || '');
+        pendingResponses[chatId] = true;
+        void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
 
         // Send ChatGPT's response back to the user
         void bot.sendMessage(chatId, response);
