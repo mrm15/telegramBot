@@ -43,7 +43,13 @@ export const handleContactShare = (bot: TelegramBot, msg: TelegramBot.Message) =
         void bot.sendMessage(chatId, "Welcome! Your number is verified.");
         showAdditionalOptions(bot, chatId);  // Show additional options if verified
     } else {
-        void bot.sendMessage(chatId, "برای استفاده از این ربات باید کاربر تایید شده ی نمارنگ باشید. 🙏");
+        void bot.sendMessage(chatId, `
+        برای استفاده از این ربات باید کاربر تایید شده ی نمارنگ باشید. 🙏
+        
+        پس از تایید مجددا 
+        /start 
+        بزنید.
+        `);
 
 
         // Save unverified number in memory and file if it’s new
