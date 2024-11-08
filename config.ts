@@ -8,4 +8,7 @@ export const config = {
     port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
 };
 
-
+// Optional check for required environment variables
+if (!config.token || !config.webhookUrl) {
+    throw new Error("BOT_TOKEN and WEBHOOK_URL must be defined in the .env file");
+}
