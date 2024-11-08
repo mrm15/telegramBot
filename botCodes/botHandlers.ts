@@ -1,8 +1,9 @@
-import fs from 'fs';
 import TelegramBot from 'node-telegram-bot-api';
 import {allowedPhoneNumbers} from './userList/userList';
 import {saveUnverifiedPhoneNumber} from "./userList/saveUnverifiedPhoneNumber";
 import {getUnverifiedPhoneNumbers} from "./userList/getUnverifiedPhoneNumbers";
+import { getChatGPTResponse } from './services/chatgptService/chatgptService';
+
 
 
 // Initialize unverified phone numbers array by reading from file if it exists
@@ -35,13 +36,18 @@ export const requestPhoneNumber = (bot: TelegramBot, msg: TelegramBot.Message) =
 };
 
 // Function to handle contact (phone number) shared by the user
+const pendingResponses: { [chatId: number]: boolean } = {};
+// Function to handle contact (phone number) shared by the user
 export const handleContactShare = (bot: TelegramBot, msg: TelegramBot.Message) => {
     const chatId = msg.chat.id;
     const userPhoneNumber = msg.contact?.phone_number;
 
     if (userPhoneNumber && allowedPhoneNumbers.includes(userPhoneNumber)) {
         void bot.sendMessage(chatId, "به ربات هوشمند نمارنگ خوش آمدید.");
-        showAdditionalOptions(bot, chatId);  // Show additional options if verified
+
+        // Set up for receiving next user message for ChatGPT
+        pendingResponses[chatId] = true;  // Mark this user as expecting a message
+        void bot.sendMessage(chatId, "اکنون می‌توانید پیام خود را ارسال کنید تا به ChatGPT ارسال شود.");
     } else {
         void bot.sendMessage(chatId, `
         برای استفاده از این ربات باید کاربر تایید شده ی نمارنگ باشید. 🙏
@@ -50,9 +56,8 @@ export const handleContactShare = (bot: TelegramBot, msg: TelegramBot.Message) =
         بزنید.
         `);
 
-
         // Save unverified number in memory and file if it’s new
-        const unverifiedPhoneNumbers = getUnverifiedPhoneNumbers()
+        const unverifiedPhoneNumbers = getUnverifiedPhoneNumbers();
         if (userPhoneNumber && !unverifiedPhoneNumbers.includes(userPhoneNumber)) {
             unverifiedPhoneNumbers.push(userPhoneNumber);
             console.log("Unverified phone numbers:", unverifiedPhoneNumbers);
@@ -98,4 +103,20 @@ export const handleAdditionalOptions = (bot: TelegramBot, callbackQuery: Telegra
     }
 
     bot.answerCallbackQuery(callbackQuery.id);
+};
+
+export const handleUserMessage = async (bot: TelegramBot, msg: TelegramBot.Message) => {
+    const chatId = msg.chat.id;
+
+    // Check if user is marked as expecting a message
+    if (pendingResponses[chatId]) {
+        // Clear pending response state
+        pendingResponses[chatId] = false;
+
+        // Send message to ChatGPT and wait for the response
+        const response = await getChatGPTResponse(msg.text || '');
+
+        // Send ChatGPT's response back to the user
+        void bot.sendMessage(chatId, response);
+    }
 };

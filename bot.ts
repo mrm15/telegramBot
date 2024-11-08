@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import TelegramBot from 'node-telegram-bot-api';
 import { config } from './config';
-import { requestPhoneNumber, handleContactShare, handleAdditionalOptions } from './botCodes/botHandlers';
+import { requestPhoneNumber, handleContactShare, handleAdditionalOptions, handleUserMessage } from './botCodes/botHandlers';
 
 // Initialize the bot
 let bot: TelegramBot | undefined;
@@ -36,6 +36,9 @@ bot?.on('contact', (msg) => handleContactShare(bot as TelegramBot, msg));
 // Handle callback queries for additional options
 bot?.on('callback_query', (callbackQuery) => handleAdditionalOptions(bot as TelegramBot, callbackQuery));
 
+// Handle regular user messages for ChatGPT interaction
+bot?.on('message', (msg) => handleUserMessage(bot as TelegramBot, msg));
+
 // Start Express server and set webhook
 app.listen(config.port, async () => {
     console.log(`Server is running on port ${config.port}`);
@@ -48,6 +51,4 @@ app.listen(config.port, async () => {
     } catch (error) {
         console.error('Error setting webhook: ', error);
     }
-    
-
 });
