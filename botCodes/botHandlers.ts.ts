@@ -15,7 +15,7 @@ export const requestPhoneNumber = (bot: TelegramBot, msg: TelegramBot.Message) =
         reply_markup: {
             keyboard: [
                 [{
-                    text: "Share your phone number",
+                    text: "ارسال شماره تلفن 📞",
                     request_contact: true
                 }],
             ],
