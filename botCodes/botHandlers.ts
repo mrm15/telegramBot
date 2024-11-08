@@ -29,8 +29,7 @@ export const requestPhoneNumber = (bot: TelegramBot, msg: TelegramBot.Message) =
 
     const message = ` 
      ${nameShow}
-     عزیز،
-     
+       عزیز،
        برای استفاده از ربات لطفا روی دکمه ی زیر کلیک کنید و روی گزینه ی  share Contact  بزنید.`
     void bot.sendMessage(chatId, message, options);
 };
