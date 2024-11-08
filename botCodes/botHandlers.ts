@@ -23,9 +23,15 @@ export const requestPhoneNumber = (bot: TelegramBot, msg: TelegramBot.Message) =
             one_time_keyboard: true,
         },
     };
-    const nameShow = msg.chat.first_name + " " + msg.chat.last_name
+    const name = msg.chat?.first_name
+    const lastName = msg?.chat?.last_name
+    const nameShow = (name && lastName) ? ( name + " " + lastName) : "کاربر "
 
-    const message = ` ${nameShow} عزیز،  برای استفاده از ربات لطفا روی دکمه ی زیر کلیک کنید و روی گزینه ی  share Contact  بزنید.`
+    const message = ` 
+     ${nameShow}
+     عزیز،
+     
+       برای استفاده از ربات لطفا روی دکمه ی زیر کلیک کنید و روی گزینه ی  share Contact  بزنید.`
     void bot.sendMessage(chatId, message, options);
 };
 
