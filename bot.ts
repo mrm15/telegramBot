@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import TelegramBot from 'node-telegram-bot-api';
 import { config } from './config';
-import { requestPhoneNumber, handleContactShare, handleAdditionalOptions } from './botCodes/botHandlers.ts';
+import { requestPhoneNumber, handleContactShare, handleAdditionalOptions } from './botCodes/botHandlers';
 
 // Initialize the bot
 let bot: TelegramBot | undefined;
