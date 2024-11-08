@@ -48,4 +48,5 @@ app.listen(config.port, async () => {
     } catch (error) {
         console.error('Error setting webhook: ', error);
     }
+
 });
