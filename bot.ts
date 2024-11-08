@@ -24,7 +24,7 @@ app.post(`/bot${config.token}`, (req, res) => {
 
 // Health check endpoint
 app.get('/', (req, res) => {
-    res.send('Bot is running!!!');
+    res.send('Bot is running!!!  that is great!');
 });
 
 // Handle '/start' command to request phone number
