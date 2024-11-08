@@ -47,7 +47,8 @@ export const handleContactShare = (bot: TelegramBot, msg: TelegramBot.Message) =
 
         // Set up for receiving next user message for ChatGPT
         pendingResponses[chatId] = true;  // Mark this user as expecting a message
-        void bot.sendMessage(chatId, "اکنون می‌توانید پیام خود را ارسال کنید تا به ChatGPT ارسال شود.");
+        void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
+        void bot.sendMessage(chatId, "به ربات هوشمند نمارنگ خوش آمدید. هر سوالی در مورد تابلو داری میتونی ازمن بپرسی.");
     } else {
         void bot.sendMessage(chatId, `
         برای استفاده از این ربات باید کاربر تایید شده ی نمارنگ باشید. 🙏
@@ -109,9 +110,14 @@ export const handleUserMessage = async (bot: TelegramBot, msg: TelegramBot.Messa
     const chatId = msg.chat.id;
 
     // Check if user is marked as expecting a message
+    void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
+
     if (pendingResponses[chatId]) {
+        void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
+
         // Clear pending response state
         pendingResponses[chatId] = false;
+        void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
 
         // Send message to ChatGPT and wait for the response
         const response = await getChatGPTResponse(msg.text || '');
