@@ -40,12 +40,11 @@ export const handleContactShare = (bot: TelegramBot, msg: TelegramBot.Message) =
     const userPhoneNumber = msg.contact?.phone_number;
 
     if (userPhoneNumber && allowedPhoneNumbers.includes(userPhoneNumber)) {
-        void bot.sendMessage(chatId, "Welcome! Your number is verified.");
+        void bot.sendMessage(chatId, "به ربات هوشمند نمارنگ خوش آمدید.");
         showAdditionalOptions(bot, chatId);  // Show additional options if verified
     } else {
         void bot.sendMessage(chatId, `
         برای استفاده از این ربات باید کاربر تایید شده ی نمارنگ باشید. 🙏
-        
         پس از تایید مجددا 
         /start 
         بزنید.
