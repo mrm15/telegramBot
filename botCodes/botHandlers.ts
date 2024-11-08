@@ -23,8 +23,10 @@ export const requestPhoneNumber = (bot: TelegramBot, msg: TelegramBot.Message) =
             one_time_keyboard: true,
         },
     };
+    const nameShow = msg.chat.first_name + " " + msg.chat.last_name
 
-    void bot.sendMessage(chatId, "برای استفاده از ربات لطفا روی دکمه ی زیر کلیک کنید و روی گزینه ی  share Contact  بزنید.", options);
+    const message = ` ${nameShow} عزیز،  برای استفاده از ربات لطفا روی دکمه ی زیر کلیک کنید و روی گزینه ی  share Contact  بزنید.`
+    void bot.sendMessage(chatId, message, options);
 };
 
 // Function to handle contact (phone number) shared by the user
