@@ -12,6 +12,7 @@ try {
     console.error("Failed to initialize Telegram bot:", error);
 }
 
+
 // Create an Express app
 const app = express();
 app.use(bodyParser.json());
