@@ -108,6 +108,15 @@ export const handleAdditionalOptions = (bot: TelegramBot, callbackQuery: Telegra
 
 export const handleUserMessage = async (bot: TelegramBot, msg: TelegramBot.Message) => {
     const chatId = msg.chat.id;
+    if(msg?.text?.includes("مامان")){
+        void bot.sendMessage(chatId, `
+        مامان جواد سرایی گل است.
+        نام او پری است و وجه تشابه اسمی او با عروس جدیدش  پری یکسان است.
+        😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂
+        `);
+
+        return
+    }
 
     // Check if user is marked as expecting a message
     void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
