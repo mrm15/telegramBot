@@ -25,7 +25,7 @@ export const getChatGPTResponse = async (message: string) => {
             ],
         });
 
-        const myResponse = `${communication.choices[0].message.role}  
+        const myResponse : any = `${communication.choices[0].message.role}  
         
         ${communication.choices[0].message.content}
         `;
