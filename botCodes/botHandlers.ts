@@ -108,33 +108,38 @@ export const handleAdditionalOptions = (bot: TelegramBot, callbackQuery: Telegra
 
 export const handleUserMessage = async (bot: TelegramBot, msg: TelegramBot.Message) => {
     const chatId = msg.chat.id;
-    if(msg?.text?.includes("مامان")){
-        void bot.sendMessage(chatId, `
-        مامان جواد سرایی خخخخ است.
-        نام او پری است و و سایر اطلاعات در مورد ایشان محرمانه است.
-        😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂
-        `);
-
-        return
-    }
+    // if(msg?.text?.includes("مامان")){
+    //     void bot.sendMessage(chatId, `
+    //     مامان جواد سرایی خخخخ است.
+    //     نام او پری است و و سایر اطلاعات در مورد ایشان محرمانه است.
+    //     😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂😂
+    //     `);
+    //
+    //     return
+    // }
 
     // Check if user is marked as expecting a message
-    void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
+    // void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
 
     if (pendingResponses[chatId]) {
-        void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
+        // void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
 
         // Clear pending response state
         pendingResponses[chatId] = false;
-        void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
+        // void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
+
+        const temp =await bot.sendMessage(chatId, "در حال پردازش...💖")
+
 
         // Send message to ChatGPT and wait for the response
         const response = await getChatGPTResponse(msg.text || '');
         pendingResponses[chatId] = true;
-        void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
+        // void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
 
         // Send ChatGPT's response back to the user
         void bot.sendMessage(chatId, response)
+        void bot.deleteMessage(chatId,temp.message_id)
+
         return
     }
 };
