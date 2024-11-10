@@ -1,25 +1,38 @@
 import axios from 'axios';
-import { config } from '../../../config';
+import {config} from '../../../config';
+import OpenAI from "openai";
 
-export const getChatGPTResponse = async (message: string): Promise<string> => {
+
+const openai = new OpenAI({
+    apiKey: config.openaiApiKey,
+    organization: config.orgId,
+    project: config.projectId,
+})
+
+export const getChatGPTResponse = async (message: string) => {
     try {
-        const response = await axios.post(
-            'https://api.openai.com/v1/chat/completions',
-            {
-                model: "gpt-3.5-turbo",
-                messages: [{ role: "user", content: message }],
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${config.openaiApiKey}`,
-                    'Content-Type': 'application/json',
+        const communication = await openai.chat.completions.create({
+            model: 'gpt-4', // Adjust model version if needed
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are pretending to be a human. Any suggestion that you are a bot is off-limits.',
                 },
-            }
-        );
+                {
+                    role: 'user',
+                    content: message,
+                },
+            ],
+        });
 
-        return response.data.choices[0].message.content;
+        const myResponse : any = `${communication.choices[0].message.role}  
+        
+        ${communication.choices[0].message.content}
+        `;
+
+
+        return myResponse
     } catch (error) {
         console.error('Error communicating with ChatGPT API:', error);
-        return 'Sorry, there was an error processing your request.';
     }
 };
