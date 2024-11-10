@@ -2,8 +2,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import {allowedPhoneNumbers} from './userList/userList';
 import {saveUnverifiedPhoneNumber} from "./userList/saveUnverifiedPhoneNumber";
 import {getUnverifiedPhoneNumbers} from "./userList/getUnverifiedPhoneNumbers";
-import { getChatGPTResponse } from './services/chatgptService/chatgptService';
-
+import {getChatGPTResponse} from './services/chatgptService/chatgptService';
 
 
 // Initialize unverified phone numbers array by reading from file if it exists
@@ -26,7 +25,7 @@ export const requestPhoneNumber = (bot: TelegramBot, msg: TelegramBot.Message) =
     };
     const name = msg.chat?.first_name
     const lastName = msg?.chat?.last_name
-    const nameShow = (name && lastName) ? ( name + " " + lastName) : "کاربر "
+    const nameShow = (name && lastName) ? (name + " " + lastName) : "کاربر "
 
     const message = ` 
      ${nameShow}
@@ -128,7 +127,7 @@ export const handleUserMessage = async (bot: TelegramBot, msg: TelegramBot.Messa
         pendingResponses[chatId] = false;
         // void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
 
-        const temp =await bot.sendMessage(chatId, "در حال پردازش...💖")
+        const temp = await bot.sendMessage(chatId, "در حال پردازش...💖")
 
 
         // Send message to ChatGPT and wait for the response
@@ -137,8 +136,8 @@ export const handleUserMessage = async (bot: TelegramBot, msg: TelegramBot.Messa
         // void bot.sendMessage(chatId, `pendingResponses[${chatId}] :  ${pendingResponses[chatId]}`);
 
         // Send ChatGPT's response back to the user
-        void bot.sendMessage(chatId, response)
-        void bot.deleteMessage(chatId,temp.message_id)
+        await bot.sendMessage(chatId, response)
+        await bot.deleteMessage(chatId, temp.message_id)
 
         return
     }
