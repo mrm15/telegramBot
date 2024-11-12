@@ -12,7 +12,7 @@ const openai = new OpenAI({
 export const getChatGPTResponse = async (message: string) => {
     try {
         const communication = await openai.chat.completions.create({
-            model: 'ftjob-y51grIkwXRSa7CHGp4qvn6c6', // Adjust model version if needed
+            model: 'ft:gpt-4o-mini-2024-07-18:personal::ASZSXxOI', // Adjust model version if needed
             messages: [
                 // {
                 //     role: 'system',
