@@ -4,3 +4,6 @@ proBOT.iml
 yarn.lock
 .idea
 node_modules
+ee.json
+formatted_output02.jsonl
+output01.jsonl
